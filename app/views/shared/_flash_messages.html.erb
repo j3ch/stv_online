@@ -1,0 +1,10 @@
+<div id="flash-messages">
+
+<% flash.each do |type, message| %>
+
+  <div class="<%= type.to_s %> flash">
+    <%= message %>
+  </div>
+
+<% end %>
+</div>

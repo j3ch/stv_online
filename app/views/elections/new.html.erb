@@ -1,0 +1,51 @@
+<html>
+<head>
+  <style>
+    .label { vertical-align: top; }
+
+  </style>
+
+</head>
+<body>
+<%= render partial: "shared/header" %>
+<%= render partial: "shared/flash_messages", flash: flash %>
+
+<div id="content-wrapper">
+<h1>New Election</h1>
+<%=  form_for :election, url: elections_path do |f| %>
+
+<table>
+<tr>
+  <td class="label">
+    <div><%= f.label :title, "Title: " %></div>
+  </td>
+  <td>
+    <div><%= f.text_field :title %></div>
+  </td>
+</tr>
+
+<tr>
+  <td class="label">
+    <div><%= f.label :description, "Description: " %></div>
+  </td>
+  <td>
+    <div><%= f.text_area :description %></div>
+  </td>
+</tr>
+
+<tr>
+  <td class="label">
+    <div><%= f.label :candidate_list, "Candidate List (one per line):"  %></div>
+  </td>
+  <td>
+    <%= f.text_area :candidate_list, :rows => 30 %>
+  </td>
+</tr>
+</table>
+
+<%= f.submit %>
+<% end %>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <title>STV Election <%= @election.title %></title>
+
+</head>
+
+<body>
+
+<div id="header">
+<div><h1>Election: <%= @election.title %></h1></div>
+<div class="description"><%= @election.description %></div>
+
+</div> 
+
+<div id="ballot">
+
+  <h1><%= @voter.name %>'s Ballot</h1>
+  <div>
+    <ol id="ballot-list">
+      <%= @ballot.ballotEntries.each do |entry| %>
+
+      <li><%= entry.candidate.name %>(<%= entry.rank %>)</li>
+
+      <% end %>
+    </ol>
+
+  </div>
+
+</div>
+
+<%= button_to "Edit", edit_ballot_path, :method => 'get' %>
+
+</body>
+
+</html>
