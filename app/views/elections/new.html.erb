@@ -35,6 +35,16 @@
 
 <tr>
   <td class="label">
+    <div><%= f.label :quota, "Number of Winners: " %></div>
+  </td>
+  <td>
+    <div><%= f.text_field :quota  %></div>
+  </td>
+</tr>
+
+
+<tr>
+  <td class="label">
     <div><%= f.label :candidate_list, "Candidate List (one per line):"  %></div>
   </td>
   <td>

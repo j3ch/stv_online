@@ -1,12 +1,12 @@
 class ElectionsController < ApplicationController
     def create
-        @election = Election.new({:title => election_params[:title], :description => election_params[:description]})
+        @election = Election.new({:title => election_params[:title], :description => election_params[:description], :quota => election_params[:quota], :status => 0 })
         if not @election.save
             flash[:error] = "Cannot create election."
             render 'new' and return
         end
 
-        @candidateList = election_params[:candidate_list].split()
+        @candidateList = election_params[:candidate_list].split(/\r?\n/)
 
         @successCandidate = Array.new
         @candidateList.each do |candidateName|
@@ -30,7 +30,7 @@ class ElectionsController < ApplicationController
 #### private helpers ####
     private 
         def election_params
-            params.require(:election).permit(:title,:description,:candidate_list)
+            params.require(:election).permit(:title,:description,:candidate_list, :quota)
         end
 
 

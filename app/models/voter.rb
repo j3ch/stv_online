@@ -3,4 +3,6 @@ class Voter < ActiveRecord::Base
     has_one :ballot
     validates :name, presence: true, allow_blank: false
     validates_uniqueness_of :name, scope: :election_id
+
+    obfuscate_id :spin => 32767
 end
