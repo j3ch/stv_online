@@ -43,7 +43,8 @@ ActiveRecord::Schema.define(version: 20141114023241) do
     t.string   "title"
     t.text     "description"
     t.integer  "quota"
-    t.integer  "status"
+    t.integer  "status",      default: 0
+    t.date     "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

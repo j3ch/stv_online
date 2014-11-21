@@ -5,6 +5,7 @@ class CreateElections < ActiveRecord::Migration
       t.text :description
       t.integer :quota
       t.integer :status, :index => true, :default => 0
+      t.date :end_date
 
       t.timestamps
     end

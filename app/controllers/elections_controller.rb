@@ -1,6 +1,13 @@
 class ElectionsController < ApplicationController
     def create
-        @election = Election.new({:title => election_params[:title], :description => election_params[:description], :quota => election_params[:quota], :status => 0 })
+        @election = Election.new({
+            :title => election_params[:title], 
+            :description => election_params[:description], 
+            :quota => election_params[:quota], 
+            :status => 0, 
+            :end_date => 2.days.from_now })
+
+
         if not @election.save
             flash[:error] = "Cannot create election."
             render 'new' and return
@@ -25,6 +32,9 @@ class ElectionsController < ApplicationController
 
     def show
         @election = Election.find(params[:id])
+        if (Date.today > @election.end_date)
+            @election.status = 1 # ended
+        end
     end
 
 #### private helpers ####

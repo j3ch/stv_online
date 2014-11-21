@@ -14,17 +14,30 @@
 
   /* style the list to maximize the droppable hitarea */
   #header { text-align: center; padding: 10px 0; margin: 10px 0; border-bottom: 1px solid black; }
-  #ballot ol { margin: 0; padding: 1em 0 1em 3em; }
+  #ballot-list { margin: 0; padding: 1em 0 1em 3em; height: 100%; }
   #candidate-list ul { list-style-type: none; padding-left: 0; }
   li { width: 300px; margin: 5px;padding: 5px; border: dotted 1px black; background: #EBF5FF; }
   .remove-button {float:right}
   .submit-button { margin: 1em; }
-  .column { margin: 5px; line-height: 2em; }
+  .column { margin: 5px; line-height: 2em; height: 100%; }
   .placeholder { background: #eeeeee; }
+  .list-content { border: 1px solid #999; height: 100%; }
 
   </style>
 
   <script>
+
+  function equalizeColumnHeight() {
+    var maxHeight = 0;
+    $(".column").each(function(ind, elem)
+        {
+            if ($(elem).height() > maxHeight)
+                maxHeight = $(elem).height();
+        }
+    );
+
+    $(".column").height(maxHeight);
+  };
 
   $(function() {
 
@@ -57,6 +70,8 @@
         $removeButton.appendTo($ballotEntry);
         $ballotEntry.appendTo( this );
 
+        equalizeColumnHeight();
+
       }
 
     }).sortable({
@@ -87,6 +102,10 @@
     $("#ballotForm").submit();
   }
 
+  $(document).ready(function() {
+    equalizeColumnHeight();
+  });
+
   </script>
 
 </head>
@@ -109,7 +128,7 @@
   <h1>1. Candidates</h1>
   <div classs="description">Drag candidates onto your ballot</div>
 
-  <div class="ui-widget-content">
+  <div class="list-content">
 
     <ul>
       <% @election.candidates.each do |c| %>
@@ -131,7 +150,7 @@
   <h1>2. Your Ranked Ballot</h1>
   <div classs="description">Order the candidates by preference</div>
 
-  <div class="ui-widget-content">
+  <div class="list-content">
 
     <ol id="ballot-list">
 
@@ -152,11 +171,11 @@
 <h1>3. Your Info</h1>
 <div><%= f.label :voterName, "Name: " %><%= f.text_field :voterName %></div>
 
-</div>
-
 <%= f.hidden_field :ballotEntries, :id => "ballotEntries" %>
 <%= f.hidden_field :electionId, :value => @election.id %>
-<%= submit_tag "Submit", :onclick =>"return reviewBallot();", :class => "submit-button" %>
+<div><%= submit_tag "Submit", :onclick =>"return reviewBallot();", :class => "submit-button" %>
+</div>
+
 
 <% end %>
 </div>
