@@ -26,7 +26,7 @@
   <h1><%= @voter.name %>'s Ballot</h1>
   <div>
     <ol id="ballot-list">
-      <%= @ballot.ballotEntries.each do |entry| %>
+      <% @ballot.ballotEntries.each do |entry| %>
 
       <li><%= entry.candidate.name %>(<%= entry.rank %>)</li>
 
