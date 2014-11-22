@@ -17,7 +17,14 @@ class BallotController < ApplicationController
 
 
         @voter = Voter.new({ :name => @ballotParams[:voterName], :election => @election })
-        @voter.save
+        if not @voter.save
+            @voter = Voter.where({:name => @ballotParams[:voterName]}).first
+            if not @voter.nil?
+                flash[:notice] = "You have already submitted a ballot."
+                
+                redirect_to @voter.ballot and return
+            end
+        end
 
         @ballot = Ballot.new({ :voter => @voter })
         @ballot.save
@@ -37,20 +44,19 @@ class BallotController < ApplicationController
         end
 
         redirect_to @ballot
-       #render json: @ballot and return
-
-       #render plain: @ballotParams[:ballotEntries].split(",")
+        #render json: @voter and return
+        #render plain: @election.to_json and return
     end
 
     def show
-        @ballot = Ballot.find(params[:id]) 
+        @ballot = Ballot.find_by_id(Ballot.deobfuscate_id(params[:id]))
         @voter = @ballot.voter
         @election = @voter.election
     end
 
 
     def edit
-        @ballot = Ballot.find(params[:id])
+        @ballot = Ballot.find_by_id(Ballot.deobfuscate_id(params[:id]))
         @election = @ballot.voter.election
 
         @ballot.voter.destroy

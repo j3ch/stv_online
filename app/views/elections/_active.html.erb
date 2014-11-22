@@ -172,8 +172,9 @@
 <div><%= f.label :voterName, "Name: " %><%= f.text_field :voterName %></div>
 
 <%= f.hidden_field :ballotEntries, :id => "ballotEntries" %>
-<%= f.hidden_field :electionId, :value => @election.id %>
+<%= f.hidden_field :electionId, :value => params[:id] %>
 <div><%= submit_tag "Submit", :onclick =>"return reviewBallot();", :class => "submit-button" %>
+
 </div>
 
 

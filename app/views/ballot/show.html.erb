@@ -12,8 +12,11 @@
 
 <body>
 
+<%= render partial: "shared/header" %>
+<%= render partial: "shared/flash_messages", flash: flash %>
+
 <div id="header">
-<div><h1>Election: <%= @election.title %></h1></div>
+<div><h1><%= link_to @election.title, election_path(@election) %></h1></div>
 <div class="description"><%= @election.description %></div>
 
 </div> 
