@@ -51,6 +51,27 @@
     <%= f.text_area :candidate_list, :rows => 30 %>
   </td>
 </tr>
+
+<tr>
+  <td class="label">
+    <div><%= f.label :user_name, "Commissioner Name: "  %></div>
+  </td>
+  <td>
+    <%= f.text_field :user_name %>
+  </td>
+</tr>
+
+<tr>
+  <td class="label">
+    <div><%= f.label :user_email, "Commissioner Email: "  %></div>
+  </td>
+  <td>
+    <%= f.text_field :user_email %>
+  </td>
+</tr>
+
+
+
 </table>
 
 <%= f.submit %>

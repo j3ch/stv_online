@@ -1,6 +1,12 @@
 class ElectionsController < ApplicationController
     def create
+        @user = User.new({
+            :name => election_params[:user_name],
+            :email => election_params[:user_email]
+        })
+        @user.save
         @election = Election.new({
+            :user => @user,
             :title => election_params[:title], 
             :description => election_params[:description], 
             :quota => election_params[:quota], 
@@ -40,7 +46,7 @@ class ElectionsController < ApplicationController
 #### private helpers ####
     private 
         def election_params
-            params.require(:election).permit(:title,:description,:candidate_list, :quota)
+            params.require(:election).permit(:title,:description,:candidate_list, :quota, :user_name, :user_email)
         end
 
 

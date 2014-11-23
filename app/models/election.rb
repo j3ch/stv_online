@@ -1,6 +1,7 @@
 class Election < ActiveRecord::Base
     has_many :candidates, dependent: :destroy
     has_many :voters, dependent: :destroy
+    belongs_to :user
 
     validates :end_date, presence: true, :date => { after: Date.today }
 
