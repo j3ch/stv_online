@@ -26,7 +26,6 @@
   </style>
 
   <script>
-
   function equalizeColumnHeight() {
     var maxHeight = 0;
     $(".column").each(function(ind, elem)
@@ -61,11 +60,18 @@
         $( this ).find( ".placeholder" ).remove();
         var candidateId = $(ui.draggable[0]).attr("candidateId");
 
+        // don't do anything if already added
         if ($(".ballot-entry[candidateId="+candidateId+"]")[0] != undefined)
             return;
-        
+
+        // delete source item
+        deleteCandidate($(ui.draggable[0]));
+       
+        // add destination item 
         $ballotEntry = $( "<li class='ballot-entry'></li>" ).attr('candidateId', candidateId).text( ui.draggable.text() );
-        $removeButton = $("<span class='remove-button'>[X]</span>").click(function() { $(".ballot-entry[candidateId="+candidateId+"]").remove(); });
+        $removeButton = $("<span class='remove-button'>[X]</span>").click(function() { 
+            removeSelection(candidateId, ui.draggable.text());
+        });
        
         $removeButton.appendTo($ballotEntry);
         $ballotEntry.appendTo( this );
@@ -92,6 +98,26 @@
 
   });
 
+  function removeSelection(id, name)
+  {
+    var entry = $($(".ballot-entry[candidateId="+id+"]")[0]);
+
+    // add back the candidate
+    $("<li class='candidate-draggable'></li>").attr("candidateId", id)
+        .html( name )
+        .draggable({ appendTo: "body", helper: "clone" })
+        .appendTo($("#candidate-list-ul"));
+
+    entry.remove();
+    
+  }
+
+  function deleteCandidate($item)
+  {
+    $(".candidate-draggable[candidateID="+$item.attr("candidateId")+"]").remove();
+
+  }
+
   function reviewBallot()
   {
     $ids = [];
@@ -108,6 +134,7 @@
 
   </script>
 
+
 </head>
 
 <body>
@@ -122,7 +149,7 @@
 
   <div class="list-content">
 
-    <ul>
+    <ul id="candidate-list-ul">
       <% @election.candidates.each do |c| %>
 
       <li class="candidate-draggable" candidateId="<%= c.id %>"><%= c.name %></li>
