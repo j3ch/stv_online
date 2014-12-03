@@ -28,6 +28,8 @@ gem 'spring',        group: :development
 
 gem 'obfuscate_id', :git => 'https://github.com/namick/obfuscate_id.git'
 
+gem 'actionpack'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

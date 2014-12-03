@@ -1,4 +1,9 @@
 class ElectionsController < ApplicationController
+
+    def index
+        @elections = Election.all
+    end
+
     def create
         @user = User.new({
             :name => election_params[:user_name],
@@ -23,7 +28,9 @@ class ElectionsController < ApplicationController
 
         @successCandidate = Array.new
         @candidateList.each do |candidateName|
-            @successCandidate << create_candidate(@election, candidateName)
+            if not candidateName.empty?
+                @successCandidate << create_candidate(@election, candidateName)
+            end
         end
 
         flash[:notice] = "Election created"

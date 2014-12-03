@@ -1,10 +1,35 @@
 <%= render partial: "shared/header" %>
 <%= render partial: "shared/flash_messages", flash: flash %>
 
-<div id="header">
-<div><h1><%= @election.title %></h1></div>
-<div class="description"><%= @election.description %></div>
-<div class="commissioner">Commissioner: <%= @election.user.name %> (<%= mail_to @election.user.email %>), </div>
-</div> 
+<% if not election.nil? %>
+    <div id="header">
+        <div><h1><%= @election.title %></h1></div>
+        <div class="description"><%= (@election.description) %></div>
+        <div class="commissioner">Commissioner: <%= @election.user.name %> (<%= mail_to @election.user.email %>), </div>
+    </div> 
 
+    <script>
+    function toggleVoters() 
+    {
+        $("#election-status-voters").toggle();
+    }
 
+    </script>
+
+    <div id="election-status-info">
+        <% if @election.voters.length == 1 %>
+          <%= link_to "1 person voted.", "#", :onClick => 'toggleVoters()' %>
+        <% else if @election.voters.length > 1 %>
+          <%= link_to @election.voters.length.to_s + " people have voted.", "#", :onClick=> 'toggleVoters()' %>
+        <% end %>
+        <% end %>
+    </div>
+    <div id="election-status-voters" style="display: none">
+        <ol>
+        <% @election.voters.each do |voter| %>
+            <li><%= voter.name %></li>
+        <% end %>
+        </ol> 
+    </div>
+
+<% end %>

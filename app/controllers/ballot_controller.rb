@@ -21,8 +21,10 @@ class BallotController < ApplicationController
             @voter = Voter.where({:name => @ballotParams[:voterName]}).first
             if not @voter.nil?
                 flash[:notice] = "You have already submitted a ballot."
-                
                 redirect_to @voter.ballot and return
+            else
+                flash[:error] = "An error occurred saving your ballot. Sorry :("
+                redirect_to '/'
             end
         end
 
@@ -55,15 +57,19 @@ class BallotController < ApplicationController
     end
 
 
-    def edit
+    def destroy
         @ballot = Ballot.find_by_id(Ballot.deobfuscate_id(params[:id]))
-        @election = @ballot.voter.election
+        if not (@ballot.nil?)
+            @voter = @ballot.voter
+            @election = @voter.election
+            @voter.destroy
+            flash[:notice] = "Your ballot has been deleted, please recast your vote!"
+            redirect_to @election
+        else 
+            flash[:error] = "An error occurred editing your ballot. Sorry :("
+            redirect_to '/'
+        end
 
-        @ballot.voter.destroy
-        @ballot.destroy
-
-        flash[:notice] = "Your ballot has been deleted, please recast your vote!"
-        redirect_to @election
     end 
 
 end

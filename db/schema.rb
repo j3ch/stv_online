@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141122234945) do
+ActiveRecord::Schema.define(version: 20141124232544) do
 
   create_table "ballot_entries", force: true do |t|
     t.integer  "rank"
@@ -38,6 +38,14 @@ ActiveRecord::Schema.define(version: 20141122234945) do
   end
 
   add_index "candidates", ["election_id"], name: "index_candidates_on_election_id"
+
+  create_table "election_results", force: true do |t|
+    t.integer  "rounds"
+    t.decimal  "quota"
+    t.integer  "election_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "elections", force: true do |t|
     t.string   "title"

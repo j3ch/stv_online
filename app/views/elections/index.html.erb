@@ -1,0 +1,17 @@
+
+<%= render partial: "header", :locals => { :election => nil, :flash => flash } %>
+
+<h1>All Elections</h1>
+
+<ol>
+    <% @elections.each do |election| %>
+    <li>
+        <span><%= link_to election.title, election %></span>
+        <span><%= election.description %></span>
+    </li>
+    <% end %>
+</ol>
+
+<br>
+
+<%= link_to 'New Election', new_election_path %>

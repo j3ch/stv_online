@@ -12,4 +12,7 @@ class BallotEntry < ActiveRecord::Base
         return Candidate.find(self.candidate_id)
     end
 
+    def eql?(other)
+        self.candidate_id.eql? other.candidate_id and self.rank.eql? other.rank
+    end
 end
