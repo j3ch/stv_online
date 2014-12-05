@@ -16,21 +16,24 @@ class BallotController < ApplicationController
         end
 
 
+            
+        curVoters = Voter.where({:election => @election })
+        curVoters.each do |voter|
+            if voter.name.downcase == @ballotParams[:voterName].downcase
+                flash[:notice] = "You have already submitted a ballot. Delete it to recast."
+                redirect_to voter.ballot and return
+            end
+        end 
+
+
         @voter = Voter.new({ :name => @ballotParams[:voterName], :election => @election })
         if not @voter.save
-            @voter = Voter.where({:name => @ballotParams[:voterName]}).first
-            if not @voter.nil?
-                flash[:notice] = "You have already submitted a ballot."
-                redirect_to @voter.ballot and return
-            else
-                flash[:error] = "An error occurred saving your ballot. Sorry :("
-                redirect_to '/'
-            end
+            flash[:error] = @voter.errors.first
+            redirect_to @election
         end
 
         @ballot = Ballot.new({ :voter => @voter })
         @ballot.save
-
 
 
         @ballotParams[:ballotEntries].split(",").each_with_index do |candidateId, index|
@@ -62,9 +65,14 @@ class BallotController < ApplicationController
         if not (@ballot.nil?)
             @voter = @ballot.voter
             @election = @voter.election
-            @voter.destroy
-            flash[:notice] = "Your ballot has been deleted, please recast your vote!"
-            redirect_to @election
+            begin
+                @voter.destroy
+                flash[:notice] = "Your ballot has been deleted, please recast your vote!"
+            rescue
+                flash[:error] = "Your ballot has been deleted, please recast your vote!"
+            ensure
+                redirect_to @election
+            end
         else 
             flash[:error] = "An error occurred editing your ballot. Sorry :("
             redirect_to '/'
