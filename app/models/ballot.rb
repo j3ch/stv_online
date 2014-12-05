@@ -7,4 +7,12 @@ class Ballot < ActiveRecord::Base
     def eql?(other)
         self.ballotEntries.eql? other.ballotEntries
     end
+
+    def to_array
+        return ballotEntries.inject([]) do |result, entry|
+            result << entry.candidate.name
+            result
+        end
+
+    end
 end
