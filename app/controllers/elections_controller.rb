@@ -45,8 +45,9 @@ class ElectionsController < ApplicationController
 
     def show
         @election = Election.find(params[:id])
-        if (Date.today > @election.end_date)
+        if true or (Date.today > @election.end_date)
             @election.status = 1 # ended
+            @electionResult = @election.compute_result
         end
     end
 

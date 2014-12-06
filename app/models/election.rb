@@ -1,4 +1,6 @@
 class Election < ActiveRecord::Base
+    require 'stv'
+
     belongs_to :user
     has_many :candidates, dependent: :destroy
     has_many :voters, dependent: :destroy
@@ -9,6 +11,11 @@ class Election < ActiveRecord::Base
     validates :end_date, presence: true, :date => { after: Date.today }
 
     obfuscate_id :spin => 32767
+
+
+    def compute_result
+        return STV.compute_stv(self)
+    end
 
     def to_python_style
         allBallots = {}
@@ -30,7 +37,7 @@ class Election < ActiveRecord::Base
             dict << {:ballot => ballot.to_array, :count => count } 
         end
 
-        return dict.to_json
+        return dict
     end
 
 end

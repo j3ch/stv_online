@@ -3,7 +3,9 @@
 <html lang="en">
 
 <% if @election.status == 0 %>
-<%= render :partial => "elections/active", eletion: @election %>
+<%= render :partial => "elections/active" %>
+<% else %>
+<%= render :partial => "elections/result" %>
 <% end %>
 
 
