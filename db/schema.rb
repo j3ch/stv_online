@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20141124232544) do
   create_table "elections", force: true do |t|
     t.string   "title"
     t.text     "description"
-    t.integer  "quota"
+    t.integer  "seats"
     t.integer  "status",      default: 0
     t.date     "end_date"
     t.integer  "user_id"

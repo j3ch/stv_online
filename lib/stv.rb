@@ -3,7 +3,7 @@ module STV
     def self.compute_stv (election)
 
         ballots = election.to_python_style
-        seats = election.quota
+        seats = election.seats
         candidates = election.candidates.to_set
 
         return compute_stv_helper(ballots, seats, candidates)

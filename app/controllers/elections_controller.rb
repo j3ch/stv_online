@@ -14,7 +14,7 @@ class ElectionsController < ApplicationController
             :user => @user,
             :title => election_params[:title], 
             :description => election_params[:description], 
-            :quota => election_params[:quota], 
+            :seats => election_params[:seats], 
             :status => 0, 
             :end_date => election_params[:end_date] })
 
@@ -54,7 +54,7 @@ class ElectionsController < ApplicationController
 #### private helpers ####
     private 
         def election_params
-            params.require(:election).permit(:title,:description,:candidate_list, :quota, :end_date, :user_name, :user_email)
+            params.require(:election).permit(:title,:description,:candidate_list, :seats, :end_date, :user_name, :user_email)
         end
 
 
