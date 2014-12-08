@@ -4,19 +4,11 @@ class BallotController < ApplicationController
         @ballotParams = params[:ballot]
         @election = Election.find(@ballotParams[:electionId])
 
-        @entries = @ballotParams[:ballotEntries].split(",")
-        if @entries.size == 0
-            flash[:error] = "You must select at least one candidate"
-            redirect_to @election and return
-        end
-
         if @ballotParams[:voterName].empty?
             flash[:error] = "You must enter your name"
             redirect_to @election and return
         end
 
-
-            
         curVoters = Voter.where({:election => @election })
         curVoters.each do |voter|
             if voter.name.downcase == @ballotParams[:voterName].downcase
@@ -24,6 +16,13 @@ class BallotController < ApplicationController
                 redirect_to voter.ballot and return
             end
         end 
+
+        @entries = @ballotParams[:ballotEntries].split(",")
+        if @entries.size == 0
+            flash[:error] = "You must select at least one candidate"
+            redirect_to @election and return
+        end
+
 
 
         @voter = Voter.new({ :name => @ballotParams[:voterName], :election => @election })

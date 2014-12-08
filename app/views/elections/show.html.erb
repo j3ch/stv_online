@@ -1,6 +1,5 @@
-<!doctype html>
 
-<html lang="en">
+<%= render :partial => "elections/header" %>
 
 <% if @election.status == 0 %>
 <%= render :partial => "elections/active" %>
@@ -8,5 +7,3 @@
 <%= render :partial => "elections/result" %>
 <% end %>
 
-
-</html>

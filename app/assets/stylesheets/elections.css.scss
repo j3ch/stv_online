@@ -1,3 +1,21 @@
 // Place all the styles related to the elections controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+#header { line-height: 24pt; text-align: center; padding: 10px 0; margin: 10px 0; border-bottom: 1px solid black; }
+
+  h1 { padding: .2em; margin: 0; }
+
+  #candidate-list { width: 420px; float:left; }
+  #ballot { width: 420px; min-height: 400px; float:left; }
+
+  /* style the list to maximize the droppable hitarea */
+  #ballot-list { margin: 0; padding: 1em 0 1em 3em; height: 100%; }
+  #candidate-list ul { list-style-type: none; padding-left: 0; }
+  li.candidate-draggable, li.ballot-entry { width: 350px; margin: 5px;padding: 5px; border: dotted 1px black; background: #EBF5FF; }
+  .remove-button {float:right}
+  .submit-button { margin: 1em; }
+  .column { margin: 5px; line-height: 2em; height: 100%; }
+  .placeholder { background: #eeeeee; }
+  .list-content { border: 1px solid #999; height: 100%; }
