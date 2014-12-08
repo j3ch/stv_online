@@ -161,6 +161,7 @@
 
 <h1>3. Your Info</h1>
 <div><%= f.label :voterName, "Name: " %><%= f.text_field :voterName %></div>
+<div><%= f.label :voterPass, "Password (optional): " %><%= f.password_field :voterPass %></div>
 
 <%= f.hidden_field :ballotEntries, :id => "ballotEntries" %>
 <%= f.hidden_field :electionId, :value => params[:id] %>

@@ -12,8 +12,13 @@ class BallotController < ApplicationController
         curVoters = Voter.where({:election => @election })
         curVoters.each do |voter|
             if voter.name.downcase == @ballotParams[:voterName].downcase
-                flash[:notice] = "You have already submitted a ballot. Delete it to recast."
-                redirect_to voter.ballot and return
+                if  voter.password_eql?(@ballotParams[:voterPass])
+                    flash[:notice] = "You have already submitted a ballot. Delete it to recast."
+                    redirect_to voter.ballot and return
+                else
+                    flash[:notice] = "This user has already submitted a ballot. If this was you, please enter the password to modify your ballot."
+                    redirect_to @election and return
+                end
             end
         end 
 
@@ -26,6 +31,10 @@ class BallotController < ApplicationController
 
 
         @voter = Voter.new({ :name => @ballotParams[:voterName], :election => @election })
+        if not @ballotParams[:voterPass].empty?
+            @voter.password= @ballotParams[:voterPass]
+        end
+
         if not @voter.save
             flash[:error] = @voter.errors.first
             redirect_to @election
