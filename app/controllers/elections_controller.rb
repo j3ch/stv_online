@@ -16,11 +16,11 @@ class ElectionsController < ApplicationController
             :description => election_params[:description], 
             :quota => election_params[:quota], 
             :status => 0, 
-            :end_date => 2.days.from_now })
+            :end_date => election_params[:end_date] })
 
 
         if not @election.save
-            flash[:error] = "Cannot create election."
+            flash[:error] = @election.errors.full_messages.first
             render 'new' and return
         end
 
@@ -54,7 +54,7 @@ class ElectionsController < ApplicationController
 #### private helpers ####
     private 
         def election_params
-            params.require(:election).permit(:title,:description,:candidate_list, :quota, :user_name, :user_email)
+            params.require(:election).permit(:title,:description,:candidate_list, :quota, :end_date, :user_name, :user_email)
         end
 
 
