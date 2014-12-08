@@ -12,6 +12,19 @@ class Election < ActiveRecord::Base
 
     obfuscate_id :spin => 32767
 
+    def candidate_list
+        self.candidates.join(",")
+    end
+
+    def user_name
+        self.user.name
+    end
+
+    def user_email
+        self.user.email
+    end
+
+
 
     def compute_result
         return STV.compute_stv(self)
