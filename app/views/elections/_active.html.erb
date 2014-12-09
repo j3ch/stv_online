@@ -13,6 +13,28 @@
     $(".column").height(maxHeight);
   };
 
+    function addItemToBallot( itemId, itemText )
+    {
+        // don't do anything if already added
+        if ($(".ballot-entry[candidateId="+itemId+"]")[0] != undefined)
+            return;
+
+        // delete source item
+        deleteCandidate(itemId);
+       
+        // add destination item 
+        $ballotEntry = $( "<li class='ballot-entry'></li>" ).attr('candidateId', itemId).text( itemText ); 
+        $removeButton = $("<span class='remove-button'>[X]</span>").click(function() { 
+            removeSelection(itemId, itemText);
+        });
+       
+        $removeButton.appendTo($ballotEntry);
+        $ballotEntry.appendTo( $("#ballot ol") );
+        equalizeColumnHeight();
+    }
+
+ 
+
   $(function() {
 
     $( "#candidate-list li" ).draggable({
@@ -21,8 +43,7 @@
       helper: "clone",
     });
 
-
-    $( "#ballot ol" ).droppable({
+   $( "#ballot ol" ).droppable({
 
       activeClass: "ui-state-default",
 
@@ -32,26 +53,11 @@
 
       drop: function( event, ui ) {
 
-        $( this ).find( ".placeholder" ).remove();
         var candidateId = $(ui.draggable[0]).attr("candidateId");
+        var candidateText = ui.draggable.text();
 
-        // don't do anything if already added
-        if ($(".ballot-entry[candidateId="+candidateId+"]")[0] != undefined)
-            return;
 
-        // delete source item
-        deleteCandidate($(ui.draggable[0]));
-       
-        // add destination item 
-        $ballotEntry = $( "<li class='ballot-entry'></li>" ).attr('candidateId', candidateId).text( ui.draggable.text() );
-        $removeButton = $("<span class='remove-button'>[X]</span>").click(function() { 
-            removeSelection(candidateId, ui.draggable.text());
-        });
-       
-        $removeButton.appendTo($ballotEntry);
-        $ballotEntry.appendTo( this );
-
-        equalizeColumnHeight();
+        addItemToBallot(candidateId, candidateText);
 
       }
 
@@ -62,9 +68,7 @@
       sort: function() {
 
         // gets added unintentionally by droppable interacting with sortable
-
         // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
-
         $( this ).removeClass( "ui-state-default" );
 
       }
@@ -80,6 +84,9 @@
     // add back the candidate
     $("<li class='candidate-draggable'></li>").attr("candidateId", id)
         .html( name )
+        .dblclick( function() {
+            addItemToBallot(id, name);
+         }) 
         .draggable({ appendTo: "body", helper: "clone" })
         .appendTo($("#candidate-list-ul"));
 
@@ -87,9 +94,9 @@
     
   }
 
-  function deleteCandidate($item)
+  function deleteCandidate(cId)
   {
-    $(".candidate-draggable[candidateID="+$item.attr("candidateId")+"]").remove();
+    $(".candidate-draggable[candidateID="+cId+"]").remove();
 
   }
 
@@ -124,7 +131,7 @@
     <ul id="candidate-list-ul">
       <% @election.candidates.each do |c| %>
 
-      <li class="candidate-draggable" candidateId="<%= c.id %>"><%= c.name %></li>
+      <li class="candidate-draggable" candidateId="<%= c.id %>" ondblclick="addItemToBallot(<%= c.id %>, '<%= c.name %>')" ><%= c.name %></li>
 
       <% end %>
 
@@ -144,8 +151,6 @@
   <div class="list-content">
 
     <ol id="ballot-list">
-
-      <li class="placeholder">Add your items here</li>
 
     </ol>
 
